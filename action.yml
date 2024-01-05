@@ -29,5 +29,5 @@ runs:
          helm repo add $repo_tmp ${{ inputs.repo }} 
          helm repo list
          helm repo update
-         helm install ${{ inputs.release }}  $repo_tmp/${{ inputs.chart }} -n ${{ inputs.namespace }}
+         helm install ${{ inputs.release }}  ${{ inputs.chart }} -n ${{ inputs.namespace }}
          
