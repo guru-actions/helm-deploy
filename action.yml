@@ -28,5 +28,5 @@ runs:
          repo_tmp=$(echo ${{ inputs.chart }} |cut -d/ -f 1)
          helm repo add $repo_tmp ${{ inputs.repo }} 
          helm repo list
-         helm install ${{ inputs.release }}  $repo-tmp/${{ inputs.chart }} -n ${{ inputs.namespace }}
+         helm install ${{ inputs.release }}  $repo_tmp/${{ inputs.chart }} -n ${{ inputs.namespace }}
          
