@@ -26,6 +26,7 @@ runs:
       shell: sh
       run: |
          
-         helm repo add tmp_repo ${{ inputs.repo }} 
+         helm repo add tmprepo ${{ inputs.repo }} 
          helm repo list
+         helm install ${{ inputs.release }}  tmp-repo/${{ inputs.chart }} -n ${{ inputs.namespace }}
          
