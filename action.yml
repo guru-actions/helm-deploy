@@ -1,0 +1,29 @@
+---
+apiVersion: automation.cloudbees.io/v1alpha1
+kind: action
+name: deploy helm chart
+description: deploys a helm chart using a standard repo
+inputs:
+  chart:
+    description: chart name
+    required: true
+  repo:
+    description: chart repository
+    required: true
+  namespace:
+    description: namespace to deploy to
+    required: true
+  release:
+    description: name of the release
+    required: true
+  
+runs:
+  using: composite
+  steps:
+    - id: deploy_chart
+      name: Deploy Chart
+      uses: docker://alpine/helm:latest
+      shell: sh
+      run: |
+         helm repo add tmp_repo ${{ inputs.repo }} 
+         helm install ${{ inputs.release }}  tmp-repo/${{ inputs.chart }} -n ${{ inputs.namespace }}
