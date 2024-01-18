@@ -16,6 +16,10 @@ inputs:
   release:
     description: name of the release
     required: true
+  version:
+    description: version of the chart
+    required: false
+
   
 runs:
   using: composite
@@ -29,5 +33,6 @@ runs:
          helm repo add $repo_tmp ${{ inputs.repo }} 
          helm repo list
          helm repo update
+         echo "version is [${{ inputs.version }}]"
          helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} -n ${{ inputs.namespace }}
          
