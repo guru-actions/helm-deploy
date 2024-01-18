@@ -33,8 +33,10 @@ runs:
          if [ "${{ inputs.version }}" != "" ]; then
             _version="--version=${{ inputs.version }}"
          fi
+         printf "the derived version is $_version"
          repo_tmp=$(echo ${{ inputs.chart }} |cut -d/ -f 1)
          helm repo add $repo_tmp ${{ inputs.repo }} 
+         
          helm repo list
          helm repo update
          echo "version is [${{ inputs.version }}]"
