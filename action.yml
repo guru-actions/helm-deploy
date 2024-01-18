@@ -44,5 +44,6 @@ runs:
          helm repo list
          helm repo update
          echo "version is [${{ inputs.version }}]"
+         printf "about to run [helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }}]\n"
          helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }}
          
