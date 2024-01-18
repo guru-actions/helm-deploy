@@ -29,10 +29,14 @@ runs:
       uses: docker://alpine/helm:latest
       shell: sh
       run: |
+         _version=""
+         if [ "${{ inputs.version }}" != "" ]; then
+            _version="--version=${{ inputs.version }}"
+         fi
          repo_tmp=$(echo ${{ inputs.chart }} |cut -d/ -f 1)
          helm repo add $repo_tmp ${{ inputs.repo }} 
          helm repo list
          helm repo update
          echo "version is [${{ inputs.version }}]"
-         helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} -n ${{ inputs.namespace }}
+         helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }}
          
