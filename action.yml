@@ -19,7 +19,12 @@ inputs:
   version:
     description: version of the chart
     required: false
-
+  repousername:
+    description: if auth required, the user name to use
+    required: false
+  repopassword:
+    description: if auth required, the user creds to use 
+    required: false
   
 runs:
   using: composite
