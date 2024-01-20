@@ -46,12 +46,13 @@ runs:
            _auth="--username=${{ inputs.repousername }} --password=${{ inputs.repopassword }}"
            printf "setting authentiation for helm repo as user name and credential provided\n"
          fi
-         printf "the derived version is $_version"
+         printf "the derived version is $_version\n"
          repo_tmp=$(echo ${{ inputs.chart }} |cut -d/ -f 1)
          helm repo add $repo_tmp ${{ inputs.repo }} $_auth
          
          helm repo list
          helm repo update
+         helm search repo |grep gapi
          echo "version is [${{ inputs.version }}]"
          printf "about to run [helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }}]\n"
          helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }}
