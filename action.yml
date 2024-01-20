@@ -39,11 +39,16 @@ runs:
          printf "release is [${{ inputs.release }}]\n"
          if [ "${{ inputs.version }}" != "" ]; then
             _version="--version=${{ inputs.version }}"
+            printf "setting specific version ${{ inputs.version }} \n"
          fi
-       
+         _auth=""
+         if [ "${{ inputs.repousername }}" != "" ] && [ "${{ inputs.repopassword }}" != "" ]
+           _auth="--username=${{ inputs.repousername }} --password=${{ inputs.repopassword }}"
+           printf "setting authentiation for helm repo as user name and credential provided\n"
+         fi
          printf "the derived version is $_version"
          repo_tmp=$(echo ${{ inputs.chart }} |cut -d/ -f 1)
-         helm repo add $repo_tmp ${{ inputs.repo }} 
+         helm repo add $repo_tmp ${{ inputs.repo }} $_auth
          
          helm repo list
          helm repo update
