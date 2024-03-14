@@ -49,7 +49,7 @@ runs:
 
          if [ "${{ inputs.values }}" != "" ]; then
             =cat ${{ inputs.version }} > $tmp_val
-            _values=" -f $tmp_val 
+            _values=" -f $tmp_val "
             
             printf "setting specific version ${{ inputs.version }} \n"
          fi
