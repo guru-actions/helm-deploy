@@ -28,6 +28,9 @@ inputs:
   values:
     description: optional values file
     required: false
+  args:
+    description: optional args
+    required: false
   
 runs:
   using: composite
@@ -39,12 +42,18 @@ runs:
       run: |
          _version=""
          _values=""
+         _args=""
          tmp_val=./tmpval.txt
          printf "version is [${{ inputs.version }}]\n"
          printf "release is [${{ inputs.release }}]\n"
          if [ "${{ inputs.version }}" != "" ]; then
             _version="--version=${{ inputs.version }}"
             printf "setting specific version ${{ inputs.version }} \n"
+         fi
+
+         if [ "${{ inputs.args }}" != "" ]; then
+            _args=" ${{ inputs.args }}"
+            printf "setting specific arge ${{ inputs.args }} \n"
          fi
 
          if [ "${{ inputs.values }}" != "" ]; then
@@ -68,5 +77,5 @@ runs:
          helm search repo
          echo "version is [${{ inputs.version }}]"
          printf "about to run [helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }}]\n"
-         helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }} $_values
+         helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }} $_values $_args
          
