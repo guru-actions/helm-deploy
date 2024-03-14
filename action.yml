@@ -25,6 +25,9 @@ inputs:
   repopassword:
     description: if auth required, the user creds to use 
     required: false
+  values:
+    description: optional values file
+    required: false
   
 runs:
   using: composite
@@ -35,12 +38,22 @@ runs:
       shell: sh
       run: |
          _version=""
+         _values=""
+         tmp_val=./tmpval.txt
          printf "version is [${{ inputs.version }}]\n"
          printf "release is [${{ inputs.release }}]\n"
          if [ "${{ inputs.version }}" != "" ]; then
             _version="--version=${{ inputs.version }}"
             printf "setting specific version ${{ inputs.version }} \n"
          fi
+
+         if [ "${{ inputs.values }}" != "" ]; then
+            =cat ${{ inputs.version }} > $tmp_val
+            _values=" -f $tmp_val 
+            
+            printf "setting specific version ${{ inputs.version }} \n"
+         fi
+         
          _auth=""
          if [ "${{ inputs.repousername }}" != "" ] && [ "${{ inputs.repopassword }}" != "" ]; then
            _auth="--username=${{ inputs.repousername }} --password=${{ inputs.repopassword }}"
@@ -55,5 +68,5 @@ runs:
          helm search repo
          echo "version is [${{ inputs.version }}]"
          printf "about to run [helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }}]\n"
-         helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }}
+         helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }} $_values
          
