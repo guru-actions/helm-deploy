@@ -58,7 +58,7 @@ runs:
 
          if [ "${{ inputs.values }}" != "" ]; then
             echo "${{ inputs.values }}" > $tmp_val
-            _values="cat $tmp_val "
+            _values=" $(cat $tmp_val) "
             
             printf "setting specific version $_values \n"
          fi
