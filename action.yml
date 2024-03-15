@@ -37,7 +37,7 @@ runs:
   steps:
     - id: deploy_chart
       name: Deploy Chart
-      uses: docker://alpine/helm:latest
+      uses: docker://alpine/helm:3.14.2
       shell: sh
       run: |
          _version=""
@@ -53,14 +53,15 @@ runs:
 
          if [ "${{ inputs.args }}" != "" ]; then
             _args=" ${{ inputs.args }}"
-            printf "setting specific arge ${{ inputs.args }} \n"
+            printf "setting specific args ${{ inputs.args }} \n"
          fi
 
          if [ "${{ inputs.values }}" != "" ]; then
+            echo "write values to a local file for helm processing"
             echo "${{ inputs.values }}" > $tmp_val
             _values=" -f $tmp_val "
             
-            printf "setting specific version $_values \n"
+            printf "setting specific values $_values \n"
          fi
          
          _auth=""
@@ -68,14 +69,13 @@ runs:
            _auth="--username=${{ inputs.repousername }} --password=${{ inputs.repopassword }}"
            printf "setting authentiation for helm repo as user name and credential provided\n"
          fi
-         printf "the derived version is $_version\n"
+         
          repo_tmp=$(echo ${{ inputs.chart }} |cut -d/ -f 1)
          helm repo add $repo_tmp ${{ inputs.repo }} $_auth
          
          helm repo list
          helm repo update
-         helm search repo
-         echo "version is [${{ inputs.version }}]"
+         
          printf "about to run [helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }} $_values $_args]\n"
          helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }} $_values $_args
          
