@@ -57,10 +57,10 @@ runs:
          fi
 
          if [ "${{ inputs.values }}" != "" ]; then
-            =cat ${{ inputs.version }} > $tmp_val
+            cat ${{ inputs.values }} > $tmp_val
             _values=" -f $tmp_val "
             
-            printf "setting specific version ${{ inputs.version }} \n"
+            printf "setting specific version ${{ inputs.values }} \n"
          fi
          
          _auth=""
