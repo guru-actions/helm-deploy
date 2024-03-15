@@ -58,7 +58,7 @@ runs:
 
          if [ "${{ inputs.values }}" != "" ]; then
             echo "${{ inputs.values }}" > $tmp_val
-            _values=" $(cat $tmp_val) "
+            _values=" -f $tmp_val "
             
             printf "setting specific version $_values \n"
          fi
@@ -76,6 +76,6 @@ runs:
          helm repo update
          helm search repo
          echo "version is [${{ inputs.version }}]"
-         printf "about to run [helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }}]\n"
+         printf "about to run [helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }} $_values $_args]\n"
          helm upgrade --install ${{ inputs.release }}  ${{ inputs.chart }} $_version -n ${{ inputs.namespace }} $_values $_args
          
