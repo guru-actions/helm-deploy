@@ -60,6 +60,7 @@ runs:
             echo "write values to a local file for helm processing"
             echo "${{ inputs.values }}" > $tmp_val
             _values=" -f $tmp_val "
+            cat $tmp_val
             
             printf "setting specific values $_values \n"
          fi
